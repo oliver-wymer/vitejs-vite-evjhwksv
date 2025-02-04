@@ -1,59 +1,44 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "@carbon/react";
-
-interface ModalProps {
-  type: string;
-  content: React.ReactElement | null;
-  open: boolean;
-}
+import React, { useState } from 'react';
+import { Theme, Header, HeaderMenuButton, HeaderName, HeaderGlobalBar, HeaderGlobalAction, SideNav } from "@carbon/react";
+import { UserAvatar } from "@carbon/icons-react";
 
 export default function App() {
-  const [openModal, setOpenModal] = useState<ModalProps | null>(null);
-
-  const handleOpenModal = () => {
-    const modalContent = (
-      <>
-        <ModalHeader
-          title="Cancel monitor creation?"
-          buttonOnClick={() => setOpenModal(null)} // Close modal when clicked
-        />
-        <ModalBody aria-label="cancel confirmation">
-          <p style={{ marginBottom: '1rem' }}>
-            Are you sure you want to cancel creating this monitor? All inputted details will not be saved.
-          </p>
-        </ModalBody>
-        <ModalFooter>
-          <Button kind="secondary" onClick={() => setOpenModal(null)}>
-            Continue monitor creation
-          </Button>
-          <Button kind="danger" onClick={clearCreateData}>
-            Cancel monitor creation
-          </Button>
-        </ModalFooter>
-      </>
-    );
-
-    setOpenModal({
-      type: 'confirm',
-      content: modalContent,
-      open: true,
-    });
-  };
-
-  const clearCreateData = () => {
-    console.log('Form data cleared');
-    setOpenModal(null); // Close the modal after clearing data
-  };
+  const [isSideNavExpanded, setIsSideNavExpanded] = useState(false);
 
   return (
     <div>
-      <Button onClick={handleOpenModal}>Launch Modal</Button>
+      <Theme theme="g100">
+        <Header aria-label="IBM Platform Name">
+          {/* <SkipToContent /> */}
+          <HeaderMenuButton
+            aria-label={isSideNavExpanded ? "Close menu" : "Open menu"}
+            onClick={() => {}}
+            isActive={isSideNavExpanded}
+            aria-expanded={isSideNavExpanded}
+          />
+          <HeaderName href="#" prefix="IBM">
+            Event Automation - Event Streams
+          </HeaderName>
+          <HeaderGlobalBar>
+            <HeaderGlobalAction tooltipAlignment="start" aria-label="Help">
+              <UserAvatar />
+            </HeaderGlobalAction>
+          </HeaderGlobalBar>
+          <SideNav
+            aria-label="Side navigation"
+            expanded={isSideNavExpanded}
+            onOverlayClick={() => setIsSideNavExpanded(true)}
+            href="#main-content"
+            isRail
+          >
+            {/* <SideNavLinks /> */}
+          </SideNav>
+        </Header>
+      </Theme>
 
-      {openModal?.open && (
-        <Modal open={openModal.open} onRequestClose={() => setOpenModal(null)}>
-          {openModal.content}
-        </Modal>
-      )}
+      <main style={{ marginLeft: "3rem", marginTop: "3rem" }}>
+        <h1>Hey</h1>
+      </main>
     </div>
   );
 }
